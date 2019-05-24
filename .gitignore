@@ -3,3 +3,7 @@ Tests
 .vs
 *.txt
 copy_from_eclipse_repo
+/Test/
+.cproject
+.project
+.settings

@@ -1,7 +1,7 @@
 // project_1.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 // comment out if you don't want to run tests
-//#define TESTS
+#define TESTS
 // -------------------------------------------
 #ifdef TESTS
 #include "Generator.h"
