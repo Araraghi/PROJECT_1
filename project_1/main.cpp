@@ -5,8 +5,7 @@
 #include "AdminView.h"
 #include "Generator.h"
 #include "StudentView.h"
-
-
+#include "ProfessorView.h"
 bool stop = false;
 using namespace project;
 //enum used to tell what privileges should use have
@@ -65,6 +64,8 @@ login:
 	if (stop) return 1;
 	unsigned user_id = get_user_id(type, db);
 	if (stop) return 1;
+
+
 	// jeżeli id jest = 0 to coś jest nie tak, chyba że to jest admin
 	if (type != USERTYPE::ADMIN && !user_id)
 	{
@@ -87,7 +88,13 @@ login:
 	else goto login;
 	break; }
 	case USERTYPE::PROFESSOR:
-		std::cout << "Nothing Here folks!\n";
+		    {
+		    ProfessorView prof_view(db, user_id);
+			prof_view.menu();
+			if (prof_view.is_exit_requested()) return 4;
+			else goto login;
+			break; }
+
 		break;
 	default:
 		break;

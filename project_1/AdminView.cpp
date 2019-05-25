@@ -164,12 +164,14 @@ using namespace project;
 							}
 							std::cout << "Enter id: \n";
 							get_id_response();
+							bool found = false;
 							for (auto & stud: list)
 							{
-								if (m_id == stud.get_id())
-									break;
+//								std::cout << m_id << stud.get_id();
+								if (m_id == stud.get_id()) found = true;
 							}
-							std::cout << "wrong id selected!\n";
+							if (!found) std::cout << "wrong id selected!\n";
+							else break;
 						}
 
 					}
@@ -192,9 +194,9 @@ using namespace project;
 						std::cout << "8 - remove this student \n";
 						std::cout << "9 - exit ( use 7 to save if you don't changes won't be written to DB) \n";
 
-
-						std::string whatmodify = get_response2();
-						switch (whatmodify[0]) {
+						get_response();
+							if (m_stop) return;
+						switch (m_response[0]) {
 						case '1':
 						{
 							std::cout << "Current NAME:" << it.m_firstname << "Insert new name \n";
@@ -212,6 +214,10 @@ using namespace project;
 							break;
 						case '2':
 						{
+							std::cout << "Enter last name : \n";
+							get_response();
+							if (m_stop) return;
+							it.m_lastname = m_response;
 
 						}
 							//copy name funtion here since surnames are the same, might allow for - in surnames check as some ppl have 2part surname
@@ -219,6 +225,9 @@ using namespace project;
 							break;
 						case '3':
 						{
+							std::cout << "Enter class number: \n";
+							get_id_response();
+							it.m_class_id = m_id;
 
 						}
 							break;
@@ -238,11 +247,19 @@ using namespace project;
 							break;
 						case '5':
 						{
+							std::cout << "Enter name of the city: \n";
+							get_response();
+							if (m_stop) return;
+							it.m_city = m_response;
 
 						}
 							break;
 						case '6':
 						{
+							std::cout << "Enter address: \n";
+							get_response();
+							if (m_stop) return;
+							it.m_address = m_response;
 
 						}
 							break;
@@ -337,6 +354,9 @@ using namespace project;
 						std::cout << "7 - add student to DB \n";
 						std::cout << "9 - exit ( use 7 to save if you don't changes won't be written to DB) \n";
 						get_response();
+
+						if (m_stop) return;
+
 						switch (m_response[0]) {
 						case '1':
 						{
@@ -357,6 +377,8 @@ using namespace project;
 						{
 							std::cout << "Enter name!\n";
 							get_response();
+
+						if (m_stop) return;
 							it.m_lastname = m_response;
 
 						}
@@ -393,6 +415,8 @@ using namespace project;
 						{
 							std::cout << "Enter address!\n";
 							get_response();
+
+						if (m_stop) return;
 							it.m_address = m_response;
 						}
 							break;
@@ -400,7 +424,9 @@ using namespace project;
 						{
 							std::cout << "Enter city!\n";
 							get_response();
+						if (m_stop) return;
 							it.m_city = m_response;
+
 
 						}
 							break;
@@ -455,6 +481,7 @@ using namespace project;
 		std::cout << "3 - Add professor \n";
 		std::cout << "4 - Back \n";
 		get_response();
+
 		if (m_stop) return;
 		if (m_response.size() == 1)
 		{
@@ -515,10 +542,10 @@ using namespace project;
 						std::cout << "7 - commit chagnes to DB \n";
 						std::cout << "8 - remove this professor \n";
 						std::cout << "9 - exit ( use 7 to save if you don't changes won't be written to DB) \n";
+						get_response();
 
 
-						std::string whatmodify = get_response2();
-						switch (whatmodify[0]) {
+						switch (m_response[0]) {
 						case '1':
 						{
 							std::cout << "Current NAME:" << it.m_first_name << "Insert new name \n";

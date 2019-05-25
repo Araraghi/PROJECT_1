@@ -81,11 +81,32 @@ void StudentView::personal_information()
 
 void StudentView::subject_view()
 {
-    
-    //lista przedmiotow z prowadzacymi - rozumiem to tak ze tworze liste z wszystkimi przedmiotami ktore sa przyporzadkowane do danego ID studenta tylko potrzebuje do tego klasy professor
-    
-    
-    
+	std::cout << "Your subjects:\n";
+   auto marks = m_db.get_marks_by_student_id(id);
+   std::set<unsigned> set{};
+
+   for (auto& mark : marks)
+   {
+	   if (set.insert(static_cast<unsigned>(mark.m_subject)).second)
+	   {
+
+		   auto prof = m_db.get_by_id<project::ProfessorInfo>(mark.m_professor_id);
+		   std::cout << "Subject: \n";
+		   switch(mark.m_subject)
+		   {
+				case  project::SUBJECT::MD:
+				   std::cout << "MD;";
+				   break;
+				case  project::SUBJECT::PE:
+				   std::cout << "PE";
+				   break;
+			   case  project::SUBJECT::PP:
+				   std::cout << "PP";
+				   break;
+		   }
+		   std::cout << " professor: " << prof.m_first_name << " " << prof.m_last_name << "\n";
+	   }
+   }
 }
 
 

@@ -57,10 +57,30 @@ namespace project
 			m_subject = project::SUBJECT(std::stoi(data->at(project::MARK_FIELD_NAMES[3])));
 			m_professor_id = std::stoul(data->at(project::MARK_FIELD_NAMES[4]));
 		}
+
+        std::string wyswietl(project::SUBJECT type) const
+        {   std::string st;
+            switch (type)
+            {
+                case project::SUBJECT::MD:
+                {st=" MD";
+                    return st;
+                    break;}
+                case project::SUBJECT::PE:
+                {st=" PE";
+                    return st;
+                    break;}
+                case project::SUBJECT::PP:
+                {st=" PP";
+                    return st;
+                    break;}
+
+            }
+        }
 		//******************************************************//
 		friend std::ostream& operator<<(std::ostream& out, const project::MarkInfo& mark)
 		{
-			out << "student_id:" << mark.m_student_id << " value: " << static_cast<float>(mark.m_value) / 2 << " subject: " << static_cast<short>(mark.m_subject);
+            out << "student_id: " << mark.m_student_id << " grade: " << static_cast<float>(mark.m_value) / 2 << " subject: " <<mark.wyswietl(mark.m_subject);
 			return out;
 		}
 	};
@@ -68,3 +88,4 @@ namespace project
 
 
 #endif
+
