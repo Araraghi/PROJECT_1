@@ -27,7 +27,6 @@ private:
 		while (true) 
 		{
 			std::cin >> m_response;
-
 			if (std::cin.fail())
 			{
 				std::cin.clear();

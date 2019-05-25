@@ -447,27 +447,317 @@ using namespace project;
 }
 
 	void AdminView::manage_professors()
-	{
-		std::cout << "1 - See professor list\n2 - Modify professor\n3 - Remove professor\n4-Add professor\n5 - Back\n";
+{
+		while (true)
+		{
+		std::cout << "1 - See all professors \n";
+		std::cout << "2 - Modify professor \n";
+		std::cout << "3 - Add professor \n";
+		std::cout << "4 - Back \n";
 		get_response();
 		if (m_stop) return;
 		if (m_response.size() == 1)
 		{
 			switch (m_response[0])
 			{
-			case '1':
-				break;
-			case '2':
-				break;
-			case '3':
-				break;
-			case '4':
-				break;
-			case '5':
-				break;
+				case '1':
+				{
+					auto allstudents = m_db.get_all<ProfessorInfo>();
+					for (auto& it :allstudents)
+					{
+						std::cout << "\n";
+						std::cout << "Title: " << it.second->m_title << "\n";
+						std::cout << it.second->get_id() << " Name: " << it.second->m_first_name << " " << it.second->m_last_name << "\n";
+						std::cout << " PESEL:" << it.second->m_PESEL << "\n";
+						std::cout << "\n";
+					}
+					break;
+				}
+				case '2':
+				{
+					auto allstudents = m_db.get_all<ProfessorInfo>();
+					for (auto& it :allstudents)
+					{
+						std::cout << "\n";
+						std::cout << "Title: " << it.second->m_title << "\n";
+						std::cout << it.second->get_id() << " Name: " << it.second->m_first_name << " " << it.second->m_last_name << "\n";
+						std::cout << " PESEL:" << it.second->m_PESEL << "\n";
+						std::cout << "\n";
+					}
+
+					ProfessorInfo it;
+					while (true)
+					{
+							std::cout << "Enter id: \n";
+							get_id_response();
+							try
+							{
+								it = m_db.get_by_id<ProfessorInfo>(m_id);
+							}
+							catch(const DatabaseError& err)
+							{
+								std::cout << err.what() << "\n";
+								continue;
+							}
+							break;
+						}
+
+
+					bool menu1 = true;
+					while (menu1) {
+						std::cout << it.get_id() << " Name: " << it.m_first_name << " " << it.m_last_name << "\n";
+						std::cout<< " PESEL:" << it.m_PESEL << "\n";
+
+						std::cout << "What do you want to modify: \n";
+						std::cout << "1 - Name \n";
+						std::cout << "2 - Surname \n";
+						std::cout << "4 - PESEL \n";
+						std::cout << "7 - commit chagnes to DB \n";
+						std::cout << "8 - remove this professor \n";
+						std::cout << "9 - exit ( use 7 to save if you don't changes won't be written to DB) \n";
+
+
+						std::string whatmodify = get_response2();
+						switch (whatmodify[0]) {
+						case '1':
+						{
+							std::cout << "Current NAME:" << it.m_first_name << "Insert new name \n";
+							std::string newname = "";
+							std::cin >> newname;
+							if (check_name(newname)) {
+								std::cout << "Name accepted. Changed name from " << it.m_first_name << "to " << newname << "\n";
+								it.m_first_name = newname;
+							}
+							else {
+								std::cout << "New name rejected. Only English letters from a-z A-Z are accepted \n";
+							}
+
+						}
+							break;
+						case '2':
+						{
+								std::cout << "Enter last name!\n";
+								get_response();
+								it.m_last_name = m_response;
+
+
+						}
+							//copy name funtion here since surnames are the same, might allow for - in surnames check as some ppl have 2part surname
+
+							break;
+						case '3':
+						{
+
+						}
+							break;
+						case '4':
+						{
+							std::cout << "Current PESEL:" << it.m_PESEL << "Insert new PESEL \n";
+							std::string newPESEL = "";
+							std::cin >> newPESEL;
+							if (check_PESEL(newPESEL)) {
+								std::cout << "PeSEL accepted. Changed PeSEL from " << it.m_PESEL << " to " << newPESEL << "\n";
+								it.m_PESEL = newPESEL;
+							}
+							else {
+								std::cout << "New PESEL rejected. PESEL must be 11 digits (0-9) \n";
+							}
+						}
+							break;
+						case '5':
+						{
+
+						}
+							break;
+						case '6':
+						{
+
+						}
+							break;
+						case '7':
+						{
+							std::cout << "Are you SURE you want to update the Professor in the Database? Type Y to confirm  \n";
+							std::cout << "the changes cannot be reverted \n";
+							char s = 'o';
+							std::cin >> s;
+							if (s == 'Y') {
+								try
+								{
+								m_db.update(it);
+								}
+								catch (const DatabaseError& err)
+								{
+									std::cout << "Update Error, error message: " << err.what() << "\n";
+									continue;
+								}
+								std::cout << "Updated. Have a great day";
+							}
+							else {
+								std::cout << "going back \n";
+
+							}
+
+
+
+						}
+							break;
+						case '8':
+						{
+							std::cout << "Are you SURE you want to remove the Professor\n";
+							std::cout <<  "from the Database? Type Y to confirm  \n";
+							std::cout << "the changes cannot be reverted \n";
+							char s = 'o';
+							std::cin >> s;
+							if (s == 'Y') {
+								m_db.remove_student_by_id(it.get_id());
+								std::cout << "Student removed. Have a nice day";
+								menu1 = false;
+								break;
+							}
+							else {
+								std::cout << "going back \n";
+
+							}
+
+
+						}
+							break;
+						case '9':
+						{
+							menu1 = false;
+							break;
+						}
+
+						default:
+						{
+							std::cout << "Wrong Input!\n";
+						}
+						break;
+						}
+					}
+
+
+
+					break;
+				}
+
+				case '3':
+				{
+						ProfessorInfo it("Temp", "Temp", "Mgr",  {"TEMP"}, "00000000000");
+						bool menu1 = true;
+						while (menu1) {
+							std::cout << it.get_id() << " Name: " << it.m_first_name << " " << it.m_last_name << "\n";
+						std::cout << "PESEL: " << it.m_PESEL << "\n";
+
+						std::cout << "What do you want to modify: \n";
+						std::cout << "1 - Name \n";
+						std::cout << "2 - Surname \n";
+						std::cout << "4 - PESEL \n";
+						std::cout << "5 - Title\n";
+						std::cout << "6 - Add subject\n";
+						std::cout << "7 - add student to DB \n";
+						std::cout << "9 - exit ( use 7 to save if you don't changes won't be written to DB) \n";
+						get_response();
+						switch (m_response[0]) {
+						case '1':
+						{
+							std::cout << "Current NAME:" << it.m_first_name << "Insert new name \n";
+							std::string newname = "";
+							std::cin >> newname;
+							if (check_name(newname)) {
+								std::cout << "Name accepted. Changed name from " << it.m_first_name << "to " << newname << "\n";
+								it.m_first_name = newname;
+							}
+							else {
+								std::cout << "New name rejected. Only English letters from a-z A-Z are accepted \n";
+							}
+
+						}
+							break;
+						case '2':
+						{
+							std::cout << "Enter name!\n";
+							get_response();
+							it.m_last_name = m_response;
+
+						}
+							//copy name funtion here since surnames are the same, might allow for - in surnames check as some ppl have 2part surname
+
+							break;
+						case '3':
+						{
+						}
+
+							break;
+						case '4':
+						{
+							std::cout << "Current PESEL:" << it.m_PESEL << "Insert new PESEL \n";
+							std::string newPESEL = "";
+							std::cin >> newPESEL;
+							if (check_PESEL(newPESEL)) {
+								std::cout << "PeSEL accepted. Changed PeSEL from " << it.m_PESEL << " to " << newPESEL << "\n";
+								it.m_PESEL = newPESEL;
+							}
+							else {
+								std::cout << "New PESEL rejected. PESEL must be 11 digits (0-9) \n";
+							}
+						}
+							break;
+						case '5':
+						{
+							std::cout << "Enter new title:\n";
+							get_response();
+							it.m_title = m_response;
+												}
+							break;
+						case '6':
+						{
+							std::cout << "Add new subject: \n";
+							get_response();
+							it.m_subjects.push_back(m_response);
+												}
+							break;
+						case '7':
+						{
+								try
+								{
+								m_db.add(it);
+								}
+								catch (const DatabaseError& err)
+								{
+									std::cout << "Add Error, error message: " << err.what() << "\n";
+									continue;
+								}
+								std::cout << "Added a professor, Have a great day";
+
+							}
+						case '9':
+							return;
+						default:
+							break;
+						}
+						}
+						break;
+				}
+				case '4':
+				{
+					return;
+					break;
+				}
+				default:
+				{
+					std::cout << "wrong input!\n";
+					break;
+				}
+
 			}
 		}
+		else
+		{
+					std::cout << "wrong input!\n";
+		}
 	}
+}
 	void AdminView::manage_marks()
 	{
 		std::cout << "1 - See professor's given marks\n2 -See student's received marks\n3 - Back\n";
