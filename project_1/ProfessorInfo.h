@@ -25,8 +25,8 @@ public:
 		m_first_name(firstname),
 		m_last_name(lastname),
 		m_title(title),
-		m_subjects(subjects),
-		m_PESEL(PESEL)
+		m_PESEL(PESEL),
+		m_subjects(subjects)
 	{
 		Random rand;
 		m_password = rand.token(10);
